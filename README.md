@@ -5,8 +5,9 @@ It gets the current frame and the position of the mouse (relative to the frame s
 
 ## Usage
 
-1. Once `mpv` is downloaded, place files from this repo in `~/.config/mpv`
-2. Reopen `mpv`, open any video. Press `shift` and `o` together, you should see `current frame number` / `total frame number`.
+1. Downlaod `mpv` from [this link](https://mpv.io/installation/)
+2. Place all files from this repo in `~/.config/mpv/`
+2. Open any video using `mpv`. Press `shift` + `o`, you should see `current frame number` / `total frame number`
 3. The `annotation.lua` script gets the current frame and the position of the mouse (relative to the frame size of the video), and copy this information to the clipboard
    + Press `g` (lower case) to get the current frame (starts from 0)
    + Press `c` (lower case) to get the position of the mouse
