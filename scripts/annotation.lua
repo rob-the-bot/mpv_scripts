@@ -2,8 +2,9 @@
 -- Date: 2023-09-22
 -- Description: Lua scripts for annotation in MPV
 -- The script gets the current frame and the position of the mouse (relative to the frame size of the video)
--- Press "g" (lower case) to get the current frame (starts from 0)
--- Press "c" (lower case) to get the position of the mouse
+-- and copy this information to the clipboard
+-- Press `g` (lower case) to get the current frame (starts from 0)
+-- Press `c` (lower case) to get the position of the mouse
 require 'mp'
 
 -- this code was taken from mpv's console.lua:
