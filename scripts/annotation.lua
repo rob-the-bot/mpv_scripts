@@ -1,14 +1,55 @@
 -- Author: Robert Wong
--- Date: 2021-12-02
+-- Date: 2023-09-22
 -- Description: Lua scripts for annotation in MPV
 -- The script gets the current frame and the position of the mouse (relative to the frame size of the video)
 -- Press "g" (lower case) to get the current frame (starts from 0)
 -- Press "c" (lower case) to get the position of the mouse
 require 'mp'
 
-local function set_clipboard(text)
-    mp.commandv("run", "powershell", "set-clipboard", text);
+-- this code was taken from mpv's console.lua:
+-- https://github.com/mpv-player/mpv/blob/master/player/lua/console.lua
+local function detect_platform()
+    local o = {}
+    -- Kind of a dumb way of detecting the platform but whatever
+    if mp.get_property_native('options/vo-mmcss-profile', o) ~= o then
+        return 'windows'
+    elseif mp.get_property_native('options/macos-force-dedicated-gpu', o) ~= o then
+        return 'macos'
+    elseif os.getenv('WAYLAND_DISPLAY') then
+        return 'wayland'
+    end
+    return 'x11'
 end
+
+local platform = detect_platform()
+
+
+-- this is based on mpv-copyTime:
+-- https://github.com/Arieleg/mpv-copyTime/blob/master/copyTime.lua
+local function get_command()
+    if platform == 'x11' then return 'xclip -silent -selection clipboard -in' end
+    if platform == 'wayland' then return 'wl-copy' end
+    if platform == 'macos' then return 'pbcopy' end
+end
+
+
+-- sets the contents of the clipboard to the given string
+-- from https://github.com/CogentRedTester/mpv-clipboard
+local function set_clipboard(text)
+
+    if platform == 'windows' then
+        mp.commandv('run', 'powershell', '-NoProfile', '-command', 'set-clipboard', escape_powershell(text))
+
+    -- this is based on mpv-copyTime:
+    -- https://github.com/Arieleg/mpv-copyTime/blob/master/copyTime.lua
+    else
+        local pipe = io.popen(get_command(), 'w')
+        if not pipe then return msg.error('could not open unix pipe') end
+        pipe:write(text)
+        pipe:close()
+    end
+end
+
 
 local function getFrame()
     local time_pos = mp.get_property_number("estimated-frame-number")
