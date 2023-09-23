@@ -39,7 +39,7 @@ end
 local function set_clipboard(text)
 
     if platform == 'windows' then
-        mp.commandv('run', 'powershell', '-NoProfile', '-command', 'set-clipboard', escape_powershell(text))
+        mp.commandv("run", "powershell", "set-clipboard", text);
 
     -- this is based on mpv-copyTime:
     -- https://github.com/Arieleg/mpv-copyTime/blob/master/copyTime.lua
