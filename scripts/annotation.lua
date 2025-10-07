@@ -1,5 +1,5 @@
 -- Author: Robert Wong
--- Date: 2023-09-22
+-- Date: 2025-10-07
 -- Description: Lua scripts for annotation in MPV
 -- The script gets the current frame and the position of the mouse (relative to the frame size of the video)
 -- and copy this information to the clipboard
