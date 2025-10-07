@@ -10,16 +10,13 @@ require 'mp'
 -- this code was taken from mpv's console.lua:
 -- https://github.com/mpv-player/mpv/blob/master/player/lua/console.lua
 local function detect_platform()
-    local o = {}
-    -- Kind of a dumb way of detecting the platform but whatever
-    if mp.get_property_native('options/vo-mmcss-profile', o) ~= o then
-        return 'windows'
-    elseif mp.get_property_native('options/macos-force-dedicated-gpu', o) ~= o then
-        return 'macos'
-    elseif os.getenv('WAYLAND_DISPLAY') then
-        return 'wayland'
+    local platform = mp.get_property_native("platform")
+    if platform == "darwin" or platform == "windows" then
+        return platform
+    elseif os.getenv("WAYLAND_DISPLAY") or os.getenv("WAYLAND_SOCKET") then
+        return "wayland"
     end
-    return 'x11'
+    return "x11"
 end
 
 local platform = detect_platform()
